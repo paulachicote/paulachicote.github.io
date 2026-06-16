@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paula Chicote</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rosa:#f2c4ce; --rosa-suave:#fdf0f3; --rojo:#c0392b; --rojo-suave:#e8807a;
+  --negro:#1a1a1a; --gris:#888; --blanco:#fefefe; --crema:#faf8f5; --borde:#e8ddd8;
+  --font-display:'EB Garamond',serif; --font-body:'DM Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font-body);background:var(--crema);color:var(--negro);min-height:100vh;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;width:100%;height:52px;background:var(--blanco);border-bottom:0.5px solid var(--borde);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;z-index:100;}
+.nav-logo{font-family:var(--font-display);font-size:1.1rem;letter-spacing:0.04em;color:var(--negro);text-decoration:none;cursor:pointer;flex-shrink:0;}
+.nav-links{display:flex;list-style:none;align-items:center;flex:1;justify-content:center;flex-wrap:nowrap;gap:0;}
+.nav-links a{font-size:0.72rem;font-weight:400;letter-spacing:0.05em;text-transform:uppercase;color:var(--gris);text-decoration:none;transition:color 0.2s;cursor:pointer;padding:0 0.6rem;white-space:nowrap;}
+.nav-links a:hover,.nav-links a.active{color:var(--rojo);}
+.hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;}
+.hamburger span{display:block;width:22px;height:1px;background:var(--negro);}
+.mobile-menu{display:none;position:fixed;top:52px;left:0;width:200px;height:calc(100vh - 52px);background:var(--blanco);border-right:0.5px solid var(--borde);flex-direction:column;padding:2rem 1.5rem;gap:1.5rem;z-index:99;overflow-y:auto;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{font-size:0.8rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--gris);text-decoration:none;cursor:pointer;}
+.mobile-menu a:hover{color:var(--rojo);}
+
+/* MAIN */
+main{margin-top:52px;width:100%;}
+.page{display:none;padding:3rem 2.5rem;max-width:1200px;margin:0 auto;}
+.page.active{display:block;}
+
+/* FOOTER IG */
+.footer-ig{text-align:center;padding:2.5rem 0 1.5rem;border-top:0.5px solid var(--borde);margin-top:3rem;}
+.footer-ig a{font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gris);text-decoration:none;}
+.footer-ig a:hover{color:var(--rojo);}
+
+/* SECTION HEADER */
+.section-header{margin-bottom:2.5rem;padding-bottom:0.8rem;border-bottom:0.5px solid var(--borde);}
+.section-header h1{font-family:var(--font-display);font-size:2rem;font-weight:400;}
+.section-header p{font-size:0.88rem;color:#555;line-height:1.7;margin-top:0.5rem;max-width:700px;}
+.intro-poem{font-family:var(--font-display);font-style:italic;font-size:1rem;color:#555;line-height:1.8;margin-top:0.8rem;max-width:600px;}
+
+/* CARRUSEL HOME */
+.carrusel-seccion{margin-bottom:4rem;}
+.carrusel-label{font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gris);margin-bottom:1.2rem;}
+.carrusel-wrapper{position:relative;}
+.carrusel-img-wrap{display:flex;justify-content:center;align-items:flex-start;}
+.carrusel-img-wrap img{max-width:68%;max-height:78vh;width:auto;height:auto;object-fit:contain;display:block;border:0.5px solid var(--borde);}
+.carrusel-video-wrap{display:flex;justify-content:center;}
+.carrusel-video-wrap iframe{width:68%;aspect-ratio:16/9;border:0.5px solid var(--borde);}
+.carrusel-ficha{text-align:center;margin-top:1rem;padding:0 16%;}
+.carrusel-ficha strong{font-family:var(--font-display);font-size:1.1rem;font-weight:400;display:block;margin-bottom:0.2rem;}
+.carrusel-ficha span{font-size:0.78rem;color:var(--gris);line-height:1.7;display:block;}
+.carrusel-btn{position:absolute;top:38%;transform:translateY(-50%);background:var(--blanco);border:0.5px solid var(--borde);color:var(--negro);width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;z-index:10;transition:background 0.2s;}
+.carrusel-btn:hover{background:var(--rosa-suave);}
+.carrusel-btn.prev{left:0;}
+.carrusel-btn.next{right:0;}
+.carrusel-dots{display:flex;justify-content:center;gap:6px;margin-top:1rem;}
+.carrusel-dot{width:6px;height:6px;border-radius:50%;background:var(--borde);cursor:pointer;border:none;transition:background 0.2s;}
+.carrusel-dot.active{background:var(--rojo);}
+
+/* PREVIEW CONJURITOS */
+.conjuritos-preview{display:grid;grid-template-columns:repeat(4,1fr);gap:0.8rem;margin-bottom:1rem;}
+.conjurito-thumb{cursor:pointer;border:0.5px solid var(--borde);overflow:hidden;background:var(--rosa-suave);}
+.conjurito-thumb img{width:100%;height:auto;display:block;transition:opacity 0.2s;}
+.conjurito-thumb:hover img{opacity:0.85;}
+
+/* BTNS */
+.btn-ver-mas{display:inline-block;margin-top:1rem;padding:0.45rem 1.2rem;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;border:0.5px solid var(--negro);color:var(--negro);background:transparent;cursor:pointer;transition:background 0.2s,color 0.2s;text-decoration:none;}
+.btn-ver-mas:hover{background:var(--negro);color:var(--blanco);}
+.btn-proceso{display:inline-block;margin-top:0.6rem;padding:0.4rem 1rem;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;border:0.5px solid var(--rosa);color:var(--rojo);background:transparent;cursor:pointer;transition:background 0.2s,color 0.2s;text-decoration:none;}
+.btn-proceso:hover{background:var(--rosa);color:var(--negro);}
+.btn-spotify{display:inline-block;margin-top:1rem;padding:0.5rem 1.3rem;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;background:#1DB954;color:#fff;border:none;cursor:pointer;text-decoration:none;transition:opacity 0.2s;}
+.btn-spotify:hover{opacity:0.85;}
+
+/* LIGHTBOX */
+.lightbox-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,10,0.93);z-index:1000;align-items:center;justify-content:center;flex-direction:column;overflow-y:auto;}
+.lightbox-overlay.open{display:flex;}
+.lightbox-inner{position:relative;display:flex;flex-direction:column;align-items:center;max-width:90vw;padding:3rem 0 2rem;}
+.lightbox-inner img{max-width:80vw;max-height:75vh;object-fit:contain;border:0.5px solid #444;display:block;}
+.lightbox-inner .lb-extra img{max-width:80vw;object-fit:contain;border:0.5px solid #333;display:block;margin-top:1rem;}
+.lightbox-ficha{text-align:center;margin-top:1rem;color:#ccc;}
+.lightbox-ficha strong{font-family:var(--font-display);font-size:1.1rem;color:#fff;display:block;margin-bottom:0.2rem;}
+.lightbox-ficha span{font-size:0.78rem;}
+.lightbox-btn{position:fixed;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;padding:1rem;z-index:1001;}
+.lightbox-btn.prev{left:0.5rem;}
+.lightbox-btn.next{right:0.5rem;}
+.lightbox-close{position:fixed;top:1.2rem;right:1.5rem;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;z-index:1001;}
+
+/* GALERÍA GRID */
+.galeria-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.8rem;margin-bottom:2rem;}
+.g-item{cursor:pointer;border:0.5px solid var(--borde);overflow:hidden;background:var(--rosa-suave);}
+.g-item img{width:100%;height:auto;display:block;transition:opacity 0.2s;}
+.g-item:hover img{opacity:0.85;}
+.g-item .yr{font-size:0.7rem;color:var(--gris);padding:0.3rem 0.4rem;letter-spacing:0.04em;}
+
+/* GALERÍA COLLAGE */
+.galeria{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2.5rem;}
+.obra{display:flex;flex-direction:column;}
+.obra-img{width:100%;background:var(--rosa-suave);border:0.5px solid var(--borde);overflow:hidden;margin-bottom:0.8rem;}
+.obra-img img{width:100%;height:auto;display:block;}
+.obra-ficha{font-size:0.78rem;color:var(--gris);line-height:1.6;}
+.obra-ficha strong{display:block;font-family:var(--font-display);font-size:1rem;color:var(--negro);font-weight:400;margin-bottom:0.1rem;}
+
+/* SERIE */
+.serie-header{margin:2.5rem 0 1rem;padding-top:2rem;border-top:0.5px solid var(--borde);}
+.serie-header h2{font-family:var(--font-display);font-size:1.5rem;font-weight:400;margin-bottom:0.5rem;}
+.serie-header p{font-size:0.88rem;color:#555;line-height:1.8;max-width:680px;white-space:pre-line;}
+
+/* SOBRE MÍ */
+#page-sobre{display:none;padding:3rem 2.5rem;max-width:900px;margin:0 auto;}
+#page-sobre.active{display:block;}
+.sobre-foto{width:100%;max-width:340px;margin-bottom:2rem;border:0.5px solid var(--borde);overflow:hidden;}
+.sobre-foto img{width:100%;height:auto;display:block;}
+.sobre-texto h1{font-family:var(--font-display);font-size:2.8rem;font-weight:400;line-height:1.1;margin-bottom:0.3rem;}
+.sobre-texto .subtitulo{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gris);margin-bottom:2rem;}
+.sobre-texto p{font-size:0.95rem;line-height:1.85;color:#333;margin-bottom:1.2rem;}
+.sobre-firma{font-family:var(--font-display);font-style:italic;font-size:1.1rem;margin-top:1rem;}
+
+/* VIDEO SECCIÓN */
+.video-lista{display:flex;flex-direction:column;gap:3rem;}
+.video-yt-wrap{width:100%;aspect-ratio:16/9;margin-bottom:0.8rem;}
+.video-yt-wrap iframe{width:100%;height:100%;border:0.5px solid var(--borde);}
+.video-ficha{font-size:0.78rem;color:var(--gris);line-height:1.6;}
+.video-ficha strong{font-family:var(--font-display);font-size:1rem;color:var(--negro);font-weight:400;display:block;margin-bottom:0.1rem;}
+
+/* TEATRO */
+.teatro-layout{display:grid;grid-template-columns:280px 1fr;gap:2.5rem;margin-bottom:2.5rem;}
+.teatro-cartel img{width:100%;height:auto;display:block;border:0.5px solid var(--borde);}
+.teatro-cartel .teatro-meta{font-size:0.78rem;color:var(--gris);line-height:1.8;margin-top:0.8rem;}
+.teatro-cartel .teatro-meta strong{display:block;font-family:var(--font-display);font-size:1rem;color:var(--negro);font-weight:400;margin-bottom:0.2rem;}
+.teatro-sinopsis{font-size:0.88rem;line-height:1.8;color:#333;}
+.teatro-fotos{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:1.5rem 0;}
+.teatro-fotos .tf{cursor:pointer;border:0.5px solid var(--borde);overflow:hidden;}
+.teatro-fotos .tf img{width:100%;height:auto;display:block;transition:opacity 0.2s;}
+.teatro-fotos .tf:hover img{opacity:0.85;}
+.teatro-creditos{font-size:0.78rem;color:var(--gris);line-height:1.8;margin-top:1rem;border-top:0.5px solid var(--borde);padding-top:1rem;}
+
+/* TEXTOS */
+.textos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+.texto-item{cursor:pointer;}
+.texto-item img{width:100%;height:auto;display:block;border:0.5px solid var(--borde);}
+.texto-item .yr{font-size:0.7rem;color:var(--gris);padding:0.3rem 0;letter-spacing:0.04em;}
+
+/* DIRECCIÓN */
+.dir-video{width:100%;aspect-ratio:16/9;margin-bottom:1rem;}
+.dir-video iframe{width:100%;height:100%;border:0.5px solid var(--borde);}
+.dir-meta{font-size:0.78rem;color:var(--gris);line-height:1.8;margin-bottom:1.5rem;}
+.dir-meta strong{display:block;font-family:var(--font-display);font-size:1rem;color:var(--negro);font-weight:400;margin-bottom:0.2rem;}
+.dir-texto{font-size:0.92rem;line-height:1.85;color:#333;max-width:760px;margin-bottom:1.5rem;}
+.dir-texto a{color:var(--rojo);text-decoration:none;border-bottom:0.5px solid var(--rosa);}
+.dir-ig-video{width:100%;max-width:500px;aspect-ratio:9/16;margin:1.5rem 0;}
+.dir-ig-video iframe{width:100%;height:100%;border:0.5px solid var(--borde);}
+
+/* CONTACTO */
+#page-contacto{display:none;max-width:520px;}
+#page-contacto.active{display:block;}
+#page-contacto h1{font-family:var(--font-display);font-size:2.5rem;font-weight:400;margin-bottom:2rem;}
+.contacto-linea{font-size:0.88rem;line-height:2;color:#333;}
+.contacto-linea a{color:var(--rojo);text-decoration:none;border-bottom:0.5px solid var(--rosa);}
+
+/* PLACEHOLDER */
+.placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gris);background:var(--rosa-suave);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .galeria-grid{grid-template-columns:repeat(2,1fr);}
+  .conjuritos-preview{grid-template-columns:repeat(2,1fr);}
+  .textos-grid{grid-template-columns:repeat(2,1fr);}
+  .teatro-layout{grid-template-columns:1fr;}
+  .teatro-fotos{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:600px){
+  .page{padding:2rem 1.2rem;}
+  .galeria{grid-template-columns:1fr;}
+  .carrusel-img-wrap img{max-width:92%;}
+  .carrusel-video-wrap iframe{width:94%;}
+  .carrusel-ficha{padding:0 4%;}
+  .dir-ig-video{max-width:100%;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" onclick="showPage('home')">Paula Chicote</a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('sobre')" data-page="sobre">Sobre mí</a></li>
+    <li><a onclick="showPage('collage')" data-page="collage">Collage</a></li>
+    <li><a onclick="showPage('conjuritos')" data-page="conjuritos">Conjuritos</a></li>
+    <li><a onclick="showPage('video')" data-page="video">Vídeo</a></li>
+    <li><a onclick="showPage('textos')" data-page="textos">Textos</a></li>
+    <li><a onclick="showPage('teatro')" data-page="teatro">Teatro</a></li>
+    <li><a onclick="showPage('direccion')" data-page="direccion">Dirección creativa</a></li>
+    <li><a onclick="showPage('contacto')" data-page="contacto">Contacto</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMobile()" aria-label="Menú"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="showPage('sobre');closeMobile()">Sobre mí</a>
+  <a onclick="showPage('collage');closeMobile()">Collage</a>
+  <a onclick="showPage('conjuritos');closeMobile()">Conjuritos</a>
+  <a onclick="showPage('video');closeMobile()">Vídeo</a>
+  <a onclick="showPage('textos');closeMobile()">Textos</a>
+  <a onclick="showPage('teatro');closeMobile()">Teatro</a>
+  <a onclick="showPage('direccion');closeMobile()">Dirección creativa</a>
+  <a onclick="showPage('contacto');closeMobile()">Contacto</a>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-btn prev" onclick="moveLightbox(-1)">&#8592;</button>
+  <div class="lightbox-inner" id="lb-inner">
+    <img id="lb-img" src="" alt="">
+    <div class="lb-extra" id="lb-extra"></div>
+    <div class="lightbox-ficha">
+      <strong id="lb-titulo"></strong>
+      <span id="lb-ficha"></span>
+      <div style="margin-top:0.6rem;" id="lb-proceso-wrap"></div>
+    </div>
+  </div>
+  <button class="lightbox-btn next" onclick="moveLightbox(1)">&#8594;</button>
+</div>
+
+<main>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+
+  <!-- CARRUSEL COLLAGE -->
+  <div class="carrusel-seccion">
+    <div class="carrusel-label">Collage</div>
+    <div class="carrusel-wrapper">
+      <button class="carrusel-btn prev" onclick="moverCarCollage(-1)">&#8592;</button>
+      <div class="carrusel-img-wrap"><img id="car-collage-img" src="" alt=""></div>
+      <div class="carrusel-ficha" id="car-collage-ficha"></div>
+      <button class="carrusel-btn next" onclick="moverCarCollage(1)">&#8594;</button>
+      <div class="carrusel-dots" id="car-collage-dots"></div>
+    </div>
+  </div>
+
+  <!-- CONJURITOS PREVIEW -->
+  <div class="carrusel-seccion">
+    <div class="carrusel-label">Conjuritos</div>
+    <div class="conjuritos-preview" id="conjuritos-preview-row"></div>
+    <button class="btn-ver-mas" onclick="showPage('conjuritos')">Ver más</button>
+  </div>
+
+  <!-- VIDEO CARRUSEL -->
+  <div class="carrusel-seccion">
+    <div class="carrusel-label">Vídeo</div>
+    <div class="carrusel-wrapper">
+      <button class="carrusel-btn prev" onclick="moverCarVideo(-1)">&#8592;</button>
+      <div class="carrusel-video-wrap" id="car-video-wrap"></div>
+      <div class="carrusel-ficha" id="car-video-ficha"></div>
+      <button class="carrusel-btn next" onclick="moverCarVideo(1)">&#8594;</button>
+      <div class="carrusel-dots" id="car-video-dots"></div>
+    </div>
+  </div>
+
+  <div class="footer-ig"><a href="https://www.instagram.com/paulachicotte/" target="_blank">@paulachicotte</a></div>
+</div>
+
+<!-- SOBRE MÍ -->
+<div id="page-sobre">
+  <div class="sobre-foto"><img src="imagenes/sobremi.jpg" alt="Paula Chicote"></div>
+  <div class="sobre-texto">
+    <p>Crear es para mí, una compulsión. Qué absurdo decir para mi cuando crear es la habilidad estrella de la vida. Salir de la cama crea el inicio del día. Que tus padres se cruzaran te creó a tí. El aparador blanco de Ikea hace de tu salón un lugar sin alma. Seguir con ese novio pinchón que te echaste alimenta tus fantasías paranoicas. O ir a la peluquería a la que vas define lo corto y postmoderno que llevas el pelo. Las palabras. Las palabras son grandes escultoras. Escribir es para mi otra compulsión. O subcompulsión. Pensar, fantasear, supongo que otra. Restaurar muebles, corregir mi cuerpo. Confesar mis pensamientos más perturbadores. El amor. Buscar. Buscar la chicha de las cosas. El hilo misterioso y nutritivo que une todas las cosas. Todas las cosas me interesan. Todas las cosas que existen ya porque todas las cosas han existido siempre. Algunas, los coches, la caza, las criptomonedas, menos.</p>
+    <p>Una curiosidad visceral, feroz me ata a la vida y me amiga con el dolor.</p>
+    <p>Una vez soñé que mi pasión diversificada incongruente era un problema. Una entidad superior clasificaba a las personas según sus aptitudes y dones naturales y creaba una institución emblemática por grupo. Yo veía a mis compañeras y amigas entrar en su facción y a mi siempre se me cerraban las puertas en las narices. No pertenecer a nada me abría la boca del miedo. Luego corría por una pista de atletismo. Los músculos que impulsan las zancadas se me contraían realmente y comprendía que los evaluadores podían acceder al mapa del cuerpo para ver su reacción en esta simulación. Emergían formas, algunas gráficas, como la ubicación en el mapa de Vigo, otras abstractas, licuadas, como geometrías iluminadas, que yo tenía que asociar. Los evaluadores testeaban el funcionamiento de mi cerebro. Al final del carril, avistaba a un amor y a otros veteranos. Ahí una voz me susurraba que la facción que estaba a punto de incluirme es la que vincula todas las otras. Llegando al final del torneo, mi carril se ramificaba en tres. Al final de cada carril, una forma. Un cuadrado, un triángulo, un círculo, como un juego para bebés. Me tocaba escoger pero yo llevaba mi atención, una luz, a cada uno de ellos. Este amor mío me miraba con una fe como una pirámide. Me decía: Puedes encestar las tres formas. Puedes ocupar los tres roles. Confía.</p>
+    <p>Supongo que por esto, y por mucho más que podría asociar pero los límites me descansan, todo lo que hago.</p>
+    <p>Todas las cosas existen ya porque todas las cosas han existido siempre. Es la escala, el orden, la saturación, la jerarquía, la interrelación entre los puntos, lo que está y estará siempre por inventar.</p>
+    <p>Supongo que por eso, trabajo siempre con lo que ya está.</p>
+    <div class="sobre-firma">Paula Chicote</div>
+  </div>
+  <div class="footer-ig"><a href="https://www.instagram.com/paulachicotte/" target="_blank">@paulachicotte</a></div>
+</div>
+
+<!-- COLLAGE -->
+<div class="page" id="page-collage">
+  <div class="section-header"><h1>Collage</h1></div>
+  <div class="galeria" id="galeria-collage"></div>
+  <div class="footer-ig"><a href="https://www.instagram.com/paulachicotte/" target="_blank">@paulachicotte</a></div>
+</div>
+
+<!-- CONJURITOS -->
+<div class="page" id="page-conjuritos">
+  <div class="section-header">
+    <h1>Conjuritos</h1>
+    <div class="intro-poem">En los libros descubro conjuros que ya divagaban por ahí ocultos.<br>Palabras que piden luz y otras que piden sombra.<br>Yo solo trato de escuchar. Ese es el juego.</div>
+  </div>
+  <div id="conjuritos-grid-main"></div>
+  <div class="footer-ig"><a href="https://www.instagram.com/paulachicotte/" target="_blank">@paulachicotte</a></div>
+</div>
+
+<!-- VÍDEO -->
+<div class="page" id="page-video">
+  <div class="section-header"><h1>Vídeo</h1></div>
+  <div class="video-lista" id="video-lista-main"></div>
+  <div class="footer-ig"><a href="https://www.instagram.com/paulachicotte/" target="_blank">@paulachicotte</a></div>
+</div>
+
+<!-- TEXTOS -->
+<div class="page" id="page-textos">
+  <div class="section-header"><h1>Textos</h1></div>
+  <div class="textos-grid" id="textos-grid"></div>
+  <div class="footer-ig"><a href="https://www.instagram.com/paulachicotte/" target="_blank">@paulachicotte</a></div>
+</div>
+
+<!-- TEATRO -->
+<div class="page" id="page-teatro">
+  <div class="section-header"><h1>Teatro</h1></div>
+
+  <div class="teatro-layout">
+    <div class="teatro-cartel">
+      <img src="imagenes/teatro/cartel-shinny.jpg" alt="Shiny Chicas Entre Mitos Sad">
+      <div class="teatro-meta">
+        <strong>Shiny Chicas Entre Mitos Sad</strong>
+        Un texto de Paula Chicote y Alejandra Armero.<br>
+        2024–2025<br>
+        Obra de teatro<br>
+        El Umbral de Primavera / Teatros Luchana
+      </div>
+    </div>
+    <div class="teatro-sinopsis">
+      <p>Adela y Diana son dos amigas que además de compartir piso, comparten la incomprensión hacia los hombres. ¡Pero Adela ha sido absorbida por el torbellino de un enamoramiento! Un Papi Boy (añadele drama si eres la amante y no lo aceptas) está nublando su criterio. Diana, que vislumbra la trágica hostia que Adela va a pegarse, no puede dejarla reproducir los mitos románticos que ambas han chupado desde la cuna. La teoría, cuando es tu amiga, bien, pero la práctica… cuando eres tú la loca perdida por un Sad Boy… no es tan fácil cumplirla.</p>
+      <br>
+      <p>Confrontadas pero juntas, recorrerán un camino de reflexión sobre el origen de sus conductas, que son un collage de todo lo que han mamado de películas, canciones, cuentos y realidades cercanas.</p>
+      <br>
+      <p>Esta revelación de la poderosa influencia que los mitos del amor romántico ejercen sobre su vida cotidiana y sobre la manera en la que se relacionan, les será descifrada por sus Ninfas: Electra e Ifigenia. Sí, las hermanas de la tragedia griega descienden a esta historia para ser la esencia, el espíritu animal, la conciencia y la herencia ancestral de nuestras humanas.</p>
+    </div>
+  </div>
+
+  <div class="teatro-fotos" id="teatro-fotos-shinny">
+    <div class="tf" onclick="openLightbox(shinnyFotos,0,false)"><img src="imagenes/teatro/shiny-1.jpg" alt="Shiny 1"></div>
+    <div class="tf" onclick="openLightbox(shinnyFotos,1,false)"><img src="imagenes/teatro/shiny-2.jpg" alt="Shiny 2"></div>
+    <div class="tf" onclick="openLightbox(shinnyFotos,2,false)"><img src="imagenes/teatro/shiny-3.jpg" alt="Shiny 3"></div>
+  </div>
+
+  <div style="margin:1.5rem 0;">
+    <a class="btn-ver-mas" href="https://blog.paseandoamisscultura.com/2025/01/shinny-chicas-entre-mitos-sad-dirigida.html" target="_blank">Leer crítica</a>
+  </div>
+
+  <div class="teatro-creditos">
+    <strong>Créditos</strong>
+    Dirección. Paula Chicote &amp; Irene Esteban / Actrices. Paula Chicote, Alejandra Armero, Lucía Cava y Aida Quintana / Ayudantía de dirección. Ethan Blanco / Producción. Paula Chicote e Inés Chabant / Escenografía. Úrsula Cuocolo / Diseño de luces. Manuel Tejera / Luces y proyección. Carmen Calleja / Coreografía. Luna Sánchez / Agradecimientos a Enrique Cervantes, Flora Brazuelo, Pedro Roldán &amp; Cler
+  </div>
+
+  <div class="footer-ig"><a href="https://www.instagram.com/paulachicotte/" target="_blank">@paulachicotte</a></div>
+</div>
+
+<!-- DIRECCIÓN CREATIVA -->
+<div class="page" id="page-direccion">
+  <div class="section-header"><h1>Dirección creativa</h1></div>
+
+  <div class="dir-video">
+    <iframe src="https://www.youtube.com/embed/VHgE7MpbIp4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  <div class="dir-meta">
+    <strong>Videoclip Mala Amiga. De Cler.</strong>
+    2025<br>
+    Dirección: Arturo Casaú / Dirección creativa: Paula Chicote / Producido por Terrier
+  </div>
+
+  <div class="dir-texto">
+    <p>Dirección artística &amp; songwriter para <a href="https://www.instagram.com/clerchicout/" target="_blank">Cler</a>, una artista emergente de Sant Feliu de Llobregat, que, atravesada por la nube gris que persigue a su generación, compone y canta sobre los temas que cruzan su vida, la vida de una chica cualquiera de la periferia charnega y obrera de Barcelona.</p>
+    <br>
+    <p>El desinterés por los estudios, la sobre-estimulación, el aburrimiento, la incomprensión, la soledad, los amigos, la comunidad, el fracaso de la familia, el cuestionamiento de las formas que se nos han dado hechas, el futuro precario en el horizonte que ya se ha vuelto presente... El deseo de entender de dónde venimos, cómo hemos llegado hasta aquí, y el deseo, el destello de esperanza, de buscar un lugar mejor: aunque no tenga hambre hay ganas de hacer algo grande.</p>
+    <br>
+    <p>Después de dos singles, "Fucking vaga" y "Supongo que pasará", que acumulan +350K reproducciones, sumando las diversas plataformas, Cler vuelve con su primer EP: Duelos de periferia. Cuatro canciones que exploran el concepto de separación, de duelo intrínseco, que caracteriza la propia ubicación de la periferia (lo que está afuera, lo que hay después) y que tiñe las relaciones de las personas que conviven en ella.</p>
+  </div>
+
+  <a class="btn-spotify" href="https://open.spotify.com/artist/1Njhu39vQlutgZHYgWtml9?si=RQGOegfCSx6qOgMjOAg27w" target="_blank">Escuchar en Spotify</a>
+
+  <div style="margin-top:2.5rem;">
+    <div class="dir-ig-video">
+      <iframe src="https://www.instagram.com/p/DQ6yU-NDJJG/embed/" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
+    </div>
+    <div class="dir-meta" style="margin-top:0.5rem;">Vídeo promocional del EP. Duelos de periferia. Guión y vídeo de Paula Chicote.</div>
+  </div>
+
+  <div class="footer-ig"><a href="https://www.instagram.com/paulachicotte/" target="_blank">@paulachicotte</a></div>
+</div>
+
+<!-- CONTACTO -->
+<div id="page-contacto">
+  <h1>Contacto</h1>
+  <div class="contacto-linea">
+    <p>Email &nbsp;<a href="mailto:paula.chicott@gmail.com">paula.chicott@gmail.com</a></p>
+    <p>Instagram &nbsp;<a href="https://instagram.com/paulachicotte" target="_blank">@paulachicotte</a></p>
+  </div>
+  <div class="footer-ig"><a href="https://www.instagram.com/paulachicotte/" target="_blank">@paulachicotte</a></div>
+</div>
+
+</main>
+
+<script>
+// ── DATOS ──
+
+const collages = [
+  { src:"imagenes/collage/mujer-en-la-ciudad.jpg", titulo:"Mujer en la ciudad", ficha:"2026 · Técnica mixta y collage sobre lienzo · 40 × 30 cm" },
+  { src:"imagenes/collage/en-las-manos.jpg", titulo:"En las manos van los besos", ficha:"2026 · Técnica mixta y collage sobre lienzo · 30 × 40 cm" },
+  { src:"imagenes/collage/mirada-desafio.jpg", titulo:"Una mirada como un desafío", ficha:"2025 · Técnica mixta y collage sobre lienzo · 30 × 40 cm", proceso:"https://www.instagram.com/p/DVW0McliA-j/" },
+  { src:"imagenes/collage/las-troyanas.jpg", titulo:"Las troyanas (encargo)", ficha:"2026 · Técnica mixta y collage sobre lienzo · 30 × 40 cm" },
+  { src:"imagenes/collage/un-insecto.jpg", titulo:"Un insecto", ficha:"2025 · Técnica mixta y collage sobre lienzo · 40 × 30 cm" },
+  { src:"imagenes/collage/dos-picos-sin-beso.jpg", titulo:"Dos picos sin beso", ficha:"2025 · Técnica mixta y collage sobre lienzo · 40 × 30 cm" },
+  { src:"imagenes/collage/anatomia-hueco.jpg", titulo:"Anatomía del hueco", ficha:"2023 · Técnica mixta. Collage. Papel sobre papel · 30 × 50 cm" },
+  { src:"imagenes/collage/caer-en-ti.jpg", titulo:"No me queda otra que caer adentro, yo que quería caer en ti", ficha:"2020 · Técnica mixta. Collage sobre papel · 30 × 40 cm" },
+  { src:"imagenes/collage/abrir-el-pecho.jpg", titulo:"Abrir el pecho", ficha:"2019 · Técnica mixta. Flores sobre papel · 40 × 30 cm" },
+];
+
+const conjuritos = [
+  { src:"imagenes/conjuritos/biologia-humana-1.jpg", titulo:"Naturaleza guarra", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm", proceso:"https://www.instagram.com/p/DV9QpxZCJe0/" },
+  { src:"imagenes/conjuritos/el-misterio.jpg", titulo:"El misterio", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm", proceso:"https://www.instagram.com/p/DWzYGadiCvb/" },
+  { src:"imagenes/conjuritos/la-muerte.jpg", titulo:"Corazón negro", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm", proceso:"https://www.instagram.com/p/DVb3Hz8iDnJ/" },
+  { src:"imagenes/conjuritos/patatas-fritas.jpg", titulo:"Patatas fritas", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm", proceso:"https://www.instagram.com/p/DV9QpxZCJe0/" },
+  { src:"imagenes/conjuritos/temores-pasados.jpg", titulo:"Se oía crujir una cosa: sus temores pasados", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm", proceso:"https://www.instagram.com/p/DZLPrfSIbkl/" },
+  { src:"imagenes/conjuritos/ataduras.jpg", titulo:"Ataduras", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm", proceso:"https://www.instagram.com/p/DWPS-FfiChn/" },
+  { src:"imagenes/conjuritos/borde-del-mundo.jpg", titulo:"El borde del mundo", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm", proceso:"https://www.instagram.com/p/DVeSJ2RCBVQ/" },
+  { src:"imagenes/conjuritos/ciudad-natal.jpg", titulo:"Idilio y cárcel", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm", proceso:"https://www.instagram.com/p/DVovXnaiBWL/" },
+  { src:"imagenes/conjuritos/cuervos.jpg", titulo:"Curarse de la historia", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm" },
+  { src:"imagenes/conjuritos/hombre-feliz-y-higuera.jpg", titulo:"Hombre serpiente & Jardín de sueños", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm" },
+  { src:"imagenes/conjuritos/Afrodita.jpg", titulo:"Agua de muchachas", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm", proceso:"https://www.instagram.com/p/DWLykE_CI8u/" },
+  { src:"imagenes/conjuritos/algarroba.jpg", titulo:"Chica dura", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm" },
+  { src:"imagenes/conjuritos/ataduras-y-patatasfritas.jpg", titulo:"Ataduras & Patatas fritas", ficha:"2026 · Poesía de borrado. Tinta sobre papel · 15 × 20 cm" },
+];
+
+const palestina = [
+  { src:"imagenes/conjuritos/corazon-escombros.jpg", titulo:"Serie sobre Palestina", ficha:"2024 · Collage digital sobre fotografías de prensa · 40 × 40 cm" },
+  { src:"imagenes/conjuritos/ideas-hambre.jpg", titulo:"Serie sobre Palestina", ficha:"2024 · Collage digital sobre fotografías de prensa · 40 × 40 cm" },
+  { src:"imagenes/conjuritos/soledad.jpg", titulo:"Serie sobre Palestina", ficha:"2024 · Collage digital sobre fotografías de prensa · 40 × 40 cm" },
+  { src:"imagenes/conjuritos/muda.jpg", titulo:"Serie sobre Palestina", ficha:"2024 · Collage digital sobre fotografías de prensa · 40 × 40 cm" },
+];
+
+const conjuritosColor = [
+  { src:"imagenes/conjuritos/femme.JPG", titulo:"Une femme est une femme", ficha:"2019 · Técnica mixta. Papel y acuarela sobre lienzo · 20 × 20 cm" },
+  { src:"imagenes/conjuritos/gritos.jpg", titulo:"Gritos", ficha:"2019 · Técnica mixta. Papel y acuarela sobre lienzo · 20 × 20 cm" },
+  { src:"imagenes/conjuritos/cerco.JPG", titulo:"Tu abrazo", ficha:"2019 · Técnica mixta. Papel y pintura acrílica sobre lienzo · 20 × 20 cm" },
+  { src:"imagenes/conjuritos/belleza.JPG", titulo:"¿La belleza nos salvaría?", ficha:"2019 · Técnica mixta. Papel y acuarela sobre lienzo · 20 × 20 cm" },
+  { src:"imagenes/conjuritos/sentimiento.jpg", titulo:"Anatomía de un sentimiento", ficha:"2020 · Técnica mixta. Papel y pintura acrílica sobre lienzo · 20 × 20 cm" },
+  { src:"imagenes/conjuritos/idealizacion-amor.JPG", titulo:"Lo que es real y lo que me he inventado yo", ficha:"2019 · Técnica mixta. Papel y acuarela sobre lienzo · 20 × 20 cm" },
+  { src:"imagenes/conjuritos/cuero-enfadado.jpg", titulo:"Un cuerpo enfadado", ficha:"2019 · Técnica mixta. Papel y acuarela sobre lienzo · 20 × 20 cm" },
+  { src:"imagenes/conjuritos/duelo-afectivo.JPG", titulo:"Duelo afectivo", ficha:"2019 · Técnica mixta. Papel y acuarela sobre lienzo · 20 × 20 cm" },
+  { src:"imagenes/conjuritos/oir.JPG", titulo:"Ruido", ficha:"2019 · Técnica mixta. Papel y acuarela sobre lienzo · 20 × 20 cm" },
+];
+
+const shinnyFotos = [
+  { src:"imagenes/teatro/shiny-1.jpg", titulo:"Shiny Chicas Entre Mitos Sad", ficha:"" },
+  { src:"imagenes/teatro/shiny-2.jpg", titulo:"Shiny Chicas Entre Mitos Sad", ficha:"" },
+  { src:"imagenes/teatro/shiny-3.jpg", titulo:"Shiny Chicas Entre Mitos Sad", ficha:"" },
+];
+
+const videos = [
+  { yt:"wjLmREfvcuo", titulo:"El propósito mayor", ficha:"2024 · Vídeo-ensayo" },
+  { yt:"ngPxDRmZ7FQ", titulo:"Sobre la condición artística, los genios y la belleza", ficha:"2022 · Vídeo-ensayo" },
+  { yt:"wQ6aA0NgPNA", titulo:"Un túnel, un jardín, un hombre", ficha:"2025 · Vídeo-ensayo" },
+  { yt:"-yKzbfYGelo", titulo:"El ejército del amor", ficha:"2024 · Vídeo-ensayo" },
+  { yt:"ajMm3SWQN8U", titulo:"La rotura de la niña", ficha:"2024 · Vídeo-ensayo" },
+];
+
+const textos = [
+  { src:"imagenes/textos/texto-bellezaobrera-1.jpg", yr:"2026", extras:["imagenes/textos/texto-bellezaobrera-2.jpg","imagenes/textos/texto-bellezaobrera-3.jpg"] },
+  { src:"imagenes/textos/texto-happening-1.jpg", yr:"2024", extras:["imagenes/textos/texto-happening-2.jpg"] },
+  { src:"imagenes/textos/texto-teconoce-1.jpg", yr:"2024" },
+  { src:"imagenes/textos/texto-desocupado.jpg", yr:"2022" },
+  { src:"imagenes/textos/texto-bicha.jpg", yr:"2023", extras:["imagenes/textos/texto-bicha-2.jpg"] },
+  { src:"imagenes/textos/texto-inteligencia.jpg", yr:"2021" },
+  { src:"imagenes/textos/texto-ballena.jpg", yr:"2021" },
+  { src:"imagenes/textos/texto-silencio-1.jpg", yr:"2022", extras:["imagenes/textos/texto-silencio-2.jpg","imagenes/textos/texto-silencio-3.jpg"] },
+  { src:"imagenes/textos/texto-vestidoblanco.jpg", yr:"2022" },
+  { src:"imagenes/textos/texto-perrodesorden.jpg", yr:"2022" },
+];
+
+// ── LIGHTBOX ──
+let lbDataset=[], lbIdx=0;
+
+function openLightbox(dataset, idx) {
+  lbDataset=dataset; lbIdx=idx;
+  renderLightbox();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function openTexto(idx) {
+  const t = textos[idx];
+  document.getElementById('lb-img').src = t.src;
+  document.getElementById('lb-titulo').textContent = t.yr;
+  document.getElementById('lb-ficha').textContent = '';
+  document.getElementById('lb-proceso-wrap').innerHTML = '';
+  const ex = document.getElementById('lb-extra');
+  ex.innerHTML = (t.extras||[]).map(s=>`<img src="${s}" alt="" style="max-width:80vw;display:block;margin-top:1rem;border:0.5px solid #333;">`).join('');
+  lbDataset = textos.map((_,i)=>i);
+  lbIdx = idx;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function moveLightbox(dir) {
+  if (lbDataset[0] !== undefined && typeof lbDataset[0] === 'number') {
+    lbIdx = (lbIdx + dir + textos.length) % textos.length;
+    openTexto(lbIdx);
+    return;
+  }
+  lbIdx = (lbIdx + dir + lbDataset.length) % lbDataset.length;
+  renderLightbox();
+}
+
+function renderLightbox() {
+  const item = lbDataset[lbIdx];
+  document.getElementById('lb-img').src = item.src;
+  document.getElementById('lb-img').alt = item.titulo||'';
+  document.getElementById('lb-titulo').textContent = item.titulo||'';
+  document.getElementById('lb-ficha').textContent = item.ficha||'';
+  document.getElementById('lb-extra').innerHTML = '';
+  const pw = document.getElementById('lb-proceso-wrap');
+  pw.innerHTML = item.proceso ? `<a class="btn-proceso" href="${item.proceso}" target="_blank">Ver proceso creativo</a>` : '';
+}
+
+document.getElementById('lightbox').addEventListener('click', function(e){ if(e.target===this) closeLightbox(); });
+
+// ── RENDER GALERÍA COLLAGE ──
+function renderGaleriaCollage() {
+  document.getElementById('galeria-collage').innerHTML = collages.map(c=>`
+    <div class="obra">
+      <div class="obra-img"><img src="${c.src}" alt="${c.titulo}" loading="lazy"></div>
+      <div class="obra-ficha">
+        <strong>${c.titulo}</strong>${c.ficha}
+        ${c.proceso?`<br><a class="btn-proceso" href="${c.proceso}" target="_blank">Ver proceso creativo</a>`:''}
+      </div>
+    </div>`).join('');
+}
+
+// ── RENDER CONJURITOS PAGE ──
+function renderConjuritosPage() {
+  const el = document.getElementById('conjuritos-grid-main');
+  el.innerHTML = '';
+
+  // Tinta negra
+  const g1 = document.createElement('div');
+  g1.className = 'galeria-grid';
+  g1.innerHTML = conjuritos.map((c,i)=>`
+    <div class="g-item" onclick="openLightbox(conjuritos,${i})">
+      <img src="${c.src}" alt="${c.titulo}" loading="lazy">
+    </div>`).join('');
+  el.appendChild(g1);
+
+  // Palestina
+  const sh = document.createElement('div');
+  sh.className = 'serie-header';
+  sh.innerHTML = `<h2>Serie sobre Palestina</h2>
+    <p>Me pregunto con qué potestad puedo hablar de la somatización con la que mi salud se resiente por atestiguar las barbaries del mundo a través de un libro o una pantalla.
+mi malestar es legítimo
+pero tengo compresas
+y pan
+y un colchón amable
+
+y claro luego España
+y mi barrio
+y las personas sin hogar
+y el maltrato del ex de mi amiga
+y mi sueldo insuficiente
+y las hipotecas de mis padres
+y los gatos que no recojo de la calle
+mira mira mira
+el mundo que está en ti</p>`;
+  el.appendChild(sh);
+  const g2 = document.createElement('div');
+  g2.className = 'galeria-grid';
+  g2.innerHTML = palestina.map((c,i)=>`
+    <div class="g-item" onclick="openLightbox(palestina,${i})">
+      <img src="${c.src}" alt="${c.titulo}" loading="lazy">
+    </div>`).join('');
+  el.appendChild(g2);
+
+  // Color
+  const sh2 = document.createElement('div');
+  sh2.className = 'serie-header';
+  sh2.innerHTML = `<h2>Conjuritos<br>con color</h2>`;
+  el.appendChild(sh2);
+  const g3 = document.createElement('div');
+  g3.className = 'galeria-grid';
+  g3.innerHTML = conjuritosColor.map((c,i)=>`
+    <div class="g-item" onclick="openLightbox(conjuritosColor,${i})">
+      <img src="${c.src}" alt="${c.titulo}" loading="lazy">
+    </div>`).join('');
+  el.appendChild(g3);
+}
+
+// ── RENDER CONJURITOS PREVIEW ──
+function renderConjuritosPreview() {
+  document.getElementById('conjuritos-preview-row').innerHTML = conjuritos.slice(0,4).map((c,i)=>`
+    <div class="conjurito-thumb" onclick="openLightbox(conjuritos,${i})">
+      <img src="${c.src}" alt="${c.titulo}" loading="lazy">
+    </div>`).join('');
+}
+
+// ── CARRUSEL COLLAGE ──
+let carCollageIdx=0;
+function renderCarCollage() {
+  const c = collages[carCollageIdx];
+  document.getElementById('car-collage-img').src=c.src;
+  document.getElementById('car-collage-img').alt=c.titulo;
+  document.getElementById('car-collage-ficha').innerHTML=`
+    <strong>${c.titulo}</strong><span>${c.ficha}</span>
+    ${c.proceso?`<a class="btn-proceso" href="${c.proceso}" target="_blank" style="display:inline-block;margin-top:0.5rem;">Ver proceso creativo</a>`:''}`;
+  document.getElementById('car-collage-dots').innerHTML=collages.map((_,i)=>
+    `<button class="carrusel-dot${i===carCollageIdx?' active':''}" onclick="carCollageIdx=${i};renderCarCollage()"></button>`).join('');
+}
+function moverCarCollage(dir){ carCollageIdx=(carCollageIdx+dir+collages.length)%collages.length; renderCarCollage(); }
+
+// ── CARRUSEL VIDEO HOME ──
+let carVideoIdx=0;
+function renderCarVideo() {
+  const v = videos[carVideoIdx];
+  document.getElementById('car-video-wrap').innerHTML=`<iframe src="https://www.youtube.com/embed/${v.yt}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  document.getElementById('car-video-ficha').innerHTML=`<strong>${v.titulo}</strong><span>${v.ficha}</span>`;
+  document.getElementById('car-video-dots').innerHTML=videos.map((_,i)=>
+    `<button class="carrusel-dot${i===carVideoIdx?' active':''}" onclick="carVideoIdx=${i};renderCarVideo()"></button>`).join('');
+}
+function moverCarVideo(dir){ carVideoIdx=(carVideoIdx+dir+videos.length)%videos.length; renderCarVideo(); }
+
+// ── RENDER VIDEO PAGE ──
+function renderVideoPage() {
+  document.getElementById('video-lista-main').innerHTML = videos.map(v=>`
+    <div class="video-yt-wrap">
+      <iframe src="https://www.youtube.com/embed/${v.yt}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="video-ficha"><strong>${v.titulo}</strong>${v.ficha}</div>`).join('<br>');
+}
+
+// ── RENDER TEXTOS ──
+function renderTextos() {
+  document.getElementById('textos-grid').innerHTML = textos.map((t,i)=>`
+    <div class="texto-item" onclick="openTexto(${i})">
+      <img src="${t.src}" alt="${t.yr}" loading="lazy">
+      <div class="yr">${t.yr}</div>
+    </div>`).join('');
+}
+
+// ── NAV ──
+function showPage(id) {
+  document.querySelectorAll('.page,#page-sobre,#page-contacto').forEach(p=>p.classList.remove('active'));
+  const t=document.getElementById('page-'+id);
+  if(t) t.classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.getAttribute('data-page')===id));
+  window.scrollTo(0,0);
+}
+function toggleMobile(){ document.getElementById('mobileMenu').classList.toggle('open'); }
+function closeMobile(){ document.getElementById('mobileMenu').classList.remove('open'); }
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded',()=>{
+  renderGaleriaCollage();
+  renderConjuritosPreview();
+  renderConjuritosPage();
+  renderCarCollage();
+  renderCarVideo();
+  renderVideoPage();
+  renderTextos();
+});
+</script>
+</body>
+</html>
